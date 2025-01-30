@@ -33,21 +33,25 @@ class TeteraJoaApplicationTests {
 
 	@Test
 	void testChangeSystem() throws Exception {
-		mockMvc.perform(post("/change-default-system").param("system", "engines"))
-				.andExpect(status().isOk());
+		mockMvc.perform(post("/change-system").param("system", "engines"))
+				.andExpect(status().isFound());
 
-		mockMvc.perform(get("/status"))
+		mockMvc.perform(get("/repair-bay"))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.damaged_system").value("engines"));
+				.andExpect(model().attribute("code", "ENG-04"));
 
-		mockMvc.perform(post("/change-default-system").param("system", "navigation"))
-				.andExpect(status().isOk());
+		mockMvc.perform(post("/change-system").param("system", "navigation"))
+				.andExpect(status().isFound());
 	}
 
 	@Test
 	void testChangeSystemInvalid() throws Exception {
-		mockMvc.perform(post("/change-default-system").param("system", "invalid_system"))
-				.andExpect(status().isBadRequest());
+		mockMvc.perform(post("/change-system").param("system", "invalid_system"))
+				.andExpect(status().isFound());
+
+		mockMvc.perform(get("/repair-bay"))
+				.andExpect(status().isOk())
+				.andExpect(model().attribute("code", "NAV-01"));
 	}
 
 	@Test

@@ -1,5 +1,6 @@
 package com.meliuy.teteraJoa.teteraJoa.controller;
 
+import com.meliuy.teteraJoa.teteraJoa.exception.InvalidSystemException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class TeteraRestController {
             this.damagedSystem = system;
             return ResponseEntity.ok().build();
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            throw new InvalidSystemException("Invalid system: " + system);
         }
     }
 
