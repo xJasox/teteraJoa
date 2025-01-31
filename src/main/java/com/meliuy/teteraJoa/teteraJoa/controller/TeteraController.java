@@ -1,4 +1,3 @@
-// src/main/java/com/meliuy/teteraJoa/teteraJoa/controller/TeteraController.java
 package com.meliuy.teteraJoa.teteraJoa.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +28,8 @@ public class TeteraController {
 
     @Operation(summary = "Get repair bay", description = "Retrieve the current system code and available systems.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK")
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping("/repair-bay")
     public String getRepairBay(Model model) {
@@ -40,7 +40,9 @@ public class TeteraController {
 
     @Operation(summary = "Change system", description = "Change the damaged system to a new one.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "302", description = "Found")
+            @ApiResponse(responseCode = "302", description = "Found"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @PostMapping("/change-system")
     public String changeSystem(@RequestParam String system) {
@@ -52,7 +54,8 @@ public class TeteraController {
 
     @Operation(summary = "Reset system", description = "Reset the system code to 'RESET'.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK")
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping("/reset")
     public String resetSystem(Model model) {

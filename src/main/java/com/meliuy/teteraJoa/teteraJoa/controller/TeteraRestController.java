@@ -1,40 +1,30 @@
 package com.meliuy.teteraJoa.teteraJoa.controller;
 
-import com.meliuy.teteraJoa.teteraJoa.exception.InvalidSystemException;
+import com.meliuy.teteraJoa.teteraJoa.model.System;
+import com.meliuy.teteraJoa.teteraJoa.service.SystemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
+@RequestMapping("/api")
 public class TeteraRestController {
 
-    private static final Map<String, String> SYSTEM_CODES = new HashMap<>() {{
-        put("navigation", "NAV-01");
-        put("communications", "COM-02");
-        put("life_support", "LIFE-03");
-        put("engines", "ENG-04");
-        put("deflector_shield", "SHLD-05");
-    }};
-    private String damagedSystem = "navigation";
+    private final SystemService systemService;
+
+    public TeteraRestController(SystemService systemService) {
+        this.systemService = systemService;
+    }
 
     @GetMapping("/status")
-    public Map<String, String> getStatus() {
-        Map<String, String> response = new HashMap<>();
-        response.put("damaged_system", damagedSystem);
-        return response;
+    public System getStatus() {
+        return systemService.getStatus();
     }
 
     @PostMapping("/change-default-system")
     public ResponseEntity<Void> changeDefaultSystem(@RequestParam String system) {
-        if (SYSTEM_CODES.containsKey(system)) {
-            this.damagedSystem = system;
-            return ResponseEntity.ok().build();
-        } else {
-            throw new InvalidSystemException("Invalid system: " + system);
-        }
+        systemService.changeSystem(system);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/teapot")
